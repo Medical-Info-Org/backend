@@ -3,6 +3,7 @@ const connectSQLdb = require("./database/mySQLdb")
 const dailyTips = require("./Routes&Controllers/Dailytips/dailytipsController")
 const diseases = require("./Routes&Controllers/Ailment Archive/ailmentArchciveController")
 
+
 require("dotenv").config()
 
 const app = express()
@@ -10,6 +11,7 @@ const port = process.env.PORT
 
 app.use(express.json())//JSON middleware
 app.use(express.urlencoded({extended: false}))
+
 app.use('/dailyTips', dailyTips)
 app.use('/diseases', diseases)
 

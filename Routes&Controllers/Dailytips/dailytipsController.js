@@ -105,6 +105,7 @@ router.get('/tips',async (req, res) => {
 // @route   GET /dailyTips/tip/:id
 // @returns Object of content, lastupdated, imageurl and imagealt
 // @access  Public
+
 router.get('/tip/:id', (req, res) => {
 
     const apiUrl = `https://health.gov/myhealthfinder/api/v3/topicsearch.json?TopicId=${req.params.id}`;
