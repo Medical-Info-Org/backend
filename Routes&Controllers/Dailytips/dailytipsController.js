@@ -30,6 +30,7 @@ const randomNumbers = getRandomNumbers(numbers, 6);
 // @desc    Get 6 random tips for homepage
 // @route   GET /dailyTips/tips
 // @returns Object of 6 tips with url, id and title
+// @access  Public
 router.get('/tips',async (req, res) => {
   try{
     const apiUrl1 = `https://health.gov/myhealthfinder/api/v3/topicsearch.json?TopicId=${randomNumbers[0]}`
@@ -103,6 +104,7 @@ router.get('/tips',async (req, res) => {
 // @desc    Get single tip
 // @route   GET /dailyTips/tip/:id
 // @returns Object of content, lastupdated, imageurl and imagealt
+// @access  Public
 router.get('/tip/:id', (req, res) => {
 
     const apiUrl = `https://health.gov/myhealthfinder/api/v3/topicsearch.json?TopicId=${req.params.id}`;
