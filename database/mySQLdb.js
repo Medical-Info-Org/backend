@@ -26,10 +26,10 @@ const connectSQLdb =()=>{
             console.log(err);
         }else{
             console.log("mySQL database connected successfully")
-            db.query("ALTER TABLE doctors ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY",(err,res)=>{
-                      if(err) {throw err};
-                      console.log("Doctor model added")
-        })
+        //     db.query("ALTER TABLE patients ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY",(err,res)=>{
+        //               if(err) {throw err};
+        //               console.log("Doctor model added")
+        // })
     }})
 
 }

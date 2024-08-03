@@ -2,6 +2,7 @@ const express = require("express")
 const {connectSQLdb} = require("./database/mySQLdb")
 const dailyTips = require("./Routes&Controllers/Dailytips/dailytipsController")
 const doctorRoute = require("./Authentication/Doctor/doctorRouter")
+const patientRoute = require("./Authentication/Patient/patientRouter")
 require("dotenv").config()
 
 const app = express()
@@ -10,6 +11,7 @@ const port = process.env.PORT
 app.use(express.json())//JSON middleware
 app.use('/dailyTips', dailyTips)
 app.use('/doctor', doctorRoute)
+app.use('/patient', patientRoute)
 connectSQLdb()
 
 //catch errors middleware
