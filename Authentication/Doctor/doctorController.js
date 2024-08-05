@@ -1,5 +1,7 @@
 const {db} = require("../../database/mySQLdb")
 
+//create schema
+
 
 const getDoctors = async(req,res)=>{
     const query = "SELECT * FROM doctors"
