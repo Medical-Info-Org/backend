@@ -1,4 +1,4 @@
-# DOCUMENTATION FOR dailtTips API 
+# DOCUMENTATION FOR dailyTips API 
 
 ## Routes
 1. '/dailyTips/tips' 
