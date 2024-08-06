@@ -4,6 +4,7 @@ const dailyTips = require("./Routes&Controllers/Dailytips/dailytipsController")
 const doctorRoute = require("./Authentication/Doctor/doctorRouter")
 const patientRoute = require("./Authentication/Patient/patientRouter")
 const diseases = require("./Routes&Controllers/Ailment Archive/ailmentArchciveController")
+
 require("dotenv").config()
 
 const app = express()

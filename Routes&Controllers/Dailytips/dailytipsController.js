@@ -29,7 +29,7 @@ const randomNumbers = getRandomNumbers(numbers, 6);
 
 // @desc    Get 6 random tips for homepage
 // @route   GET /dailyTips/tips
-// @returns Object of 6 tips with url, id and title
+// @returns Object of 6 tips with ImageUrl, id and title
 // @access  Public
 router.get('/tips',async (req, res) => {
   try{
