@@ -1,45 +1,37 @@
-const {db} = require("../../database/mySQLdb")
+// const {db} = require("../../database/mySQLdb")
+const Patient = require("../../Model/Users/patientSchema")
+const emailValidator = require('../../utils/emailValidator')
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+
 
 const getPatients = async(req,res)=>{
-    const query = "SELECT * FROM patients"
-    db.query(query, (err,res)=>{
-        if(err){
-            throw err
-        }
-        console.log(res)
-    })
+  const users = await Patient.find()
+  res.status(200).json({message: users})
 }
 
 // signup Patients
 const signupPatient = async(req,res)=>{
-        const {firstname, lastname, email, password, country, address} = req.body
-        if(!firstname || !lastname || !email || !password || !country || !address){
-            res.status(400).json({message: "Please fill all fields"})  
-        } 
+        const {firstName, lastName, email, password, country} = req.body
         try {  
-            const query1 = `SELECT * FROM patients WHERE email = "${email}"` 
-            db.query(query1, (err, result)=>{
-                if (err) {
-                    console.log(err); 
-                    res.status(400).json({message:err.sqlMessage, errorDetail: err.sql})
-                }
-                else if(result.length > 0){
-                    res.status(400).json({message: "User already exists"})
-                }else{
-                    const query = `INSERT INTO patients (firstname, lastname, email, password, country, address) VALUES ('${firstname}', '${lastname}', '${email}', '${password}', '${country}', '${address}')`
-                    db.query(query, (err, result)=>{
-                    if (err) {
-                        console.log(err); 
-                        res.status(400).json({message:err.sqlMessage, errorDetail: err.sql})
-                    }
-                    res.send(result)
-                 })
-                }
-             })
-              
+            if(!firstName || !lastName || !email || !password || !country){
+                res.status(400).json({message: "Please fill all fields"})  
+            } 
+    const user =await Patient.findOne({email});
+    const emailTrue = emailValidator(email)
+    if(!emailTrue){
+      res.status(400).json({message:"please enter a valid Email"})
+    }
+    if(!user){
+    const securePassword = await bcrypt.hash(password, 10)
+    const user = await Patient.create({firstName, lastName, email, password: securePassword, country})
+    res.status(201).json({message: "User Signup Successful", User:{name: user.firstName}} )
+    }else if(user){
+      res.status(400).json({message:"User already exists"})
+    }
         } catch (error) {
             console.log(error)
-            throw error
+            res.status(400).json({message:error})
         }
 }
 
@@ -48,24 +40,16 @@ const loginPatient = async(req,res) =>{
     // res.status(200).json({message: "login patients"})
     const {email, password} = req.body
     try {
-        if(!email || !password){
-            res.status(400).json({message: "Please fill all fields"})
+        const user = await Patient.findOne({email})
+        if(!user){
+          res.status(400).json({message:"Invalid username or Password"})
+        }else if(user && await bcrypt.compare(password, user.password)){
+            const accessToken = await jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: "7d"})
+            res.status(200).json({message: `Login Successful, welcome ${user.firstName}`, accessToken})
         }
-        const query = `SELECT * FROM patients WHERE email = "${email}"`
-        db.query(query, (err, result)=>{
-            if (err){ 
-                console.log(err)
-                res.status(400).json({message:err.sqlMessage, errorDetail: err.sql})
-            }
-            if(result.length === 0){
-                res.send("Invalid Email or password")
-            }
-            const user = result.filter((item)=> item === email )
-            res.send(result)
-         })
     } catch (error) {
         console.log(error)
-        throw error
+        res.status(400).json({message:error})
     }
 }
 
